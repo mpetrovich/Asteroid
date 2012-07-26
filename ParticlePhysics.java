@@ -1,7 +1,7 @@
 /* ------------------------------------------------------------
-   About:      Particle physics class
-   Author:     Michael C. Petrovich
-               mpetrovich@comcast.net
+   About:	  Particle physics class
+   Author:	 Michael C. Petrovich
+			   mpetrovich@comcast.net
    
    Copyright © 2003-2006 Michael C. Petrovich
 ------------------------------------------------------------ */
@@ -90,21 +90,22 @@ public class	ParticlePhysics
 				double	proximity = getProximity(distances.get(i), refDistance, 0.01, 4);
 				
 				// Color
-				int	r = ((Point2D) env.group.get(i)).color.getRed();
-				int	g = ((Point2D) env.group.get(i)).color.getGreen();
-				int	b = ((Point2D) env.group.get(i)).color.getBlue();
+				Point2D pt = (Point2D) env.group.get(i);
+				int	r = pt.color.getRed();
+				int	g = pt.color.getGreen();
+				int	b = pt.color.getBlue();
 				r = (r * proximity > 255 ? 255 : (int) (r * proximity));
 				g = (g * proximity > 255 ? 255 : (int) (g * proximity));
 				b = (b * proximity > 255 ? 255 : (int) (b * proximity));
-				((Point2D) env.group.get(i)).color = new Color(r, g, b);
+				pt.color = new Color(r, g, b);
 				
 				// Radius
-				int	radius = ((Point2D) env.group.get(i)).radius;
+				int	radius = pt.radius;
 				radius *= Math.pow(proximity, 1) * 2;
 				radius = (int)(radius * env.camera.zoom);
 				if (radius < 1)
 					radius = 0;
-				((Point2D) env.group.get(i)).radius = radius;
+				pt.radius = radius;
 			}
 		}
 	}
@@ -126,31 +127,24 @@ public class	ParticlePhysics
 	
 	public static void	fadeHistory(java.util.Vector<GraphicsObject> history, int historySize, Color backColor)
 	{
-		double	step = 100.0 / (historySize);
-		double	opacity = 0;
-		//System.out.println("size= " + historySize + " (" + history.size() + "),  step= " + step);
+		double	step = 1.0 / (historySize);
+		double	time = 0;
 		for (GraphicsObject obj : history)
 		{
 			Group	group = (Group) obj;
-			opacity += step;
-			//System.out.println("   opacity= " + opacity);
+			double opacity = ParticlePhysics.getOpacity(time, (Particle) group.get(0));
+			time += step;
 			for (int i = 0; i < group.size(); i++)
 			{
 				Point3D	p = (Point3D) group.get(i);
 				p.color = makeTransparent(backColor, p.color, opacity);
 			}
 		}
-		
-		/*
-		System.out.println("HISTORY ##############################");
-		for (GraphicsObject obj : history)
-		{
-			System.out.println("GROUP ---------------------------");
-			System.out.println((Group) obj);
-			System.out.println("END GROUP -----------------------");
-		}
-		System.out.println("END HISTORY ##########################\n");
-		//*/
+	}
+	
+	private static double	getOpacity(double time, Particle particle)
+	{
+		return 100.0 * Math.pow(time, 1.0 / 4);
 	}
 	
 	private static Color	makeTransparent(Color back, Color front, double opacity)

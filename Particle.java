@@ -32,6 +32,11 @@ public class	Particle extends Point3D
 	
 	/* Accessors
 	---------------------------------------------------------------------- */
+	public double   getSpeed()
+	{
+	    return this.velocity.getLength();
+	}
+	
 	public GraphicsObject	clone()
 	{
 		Particle	p = new Particle();

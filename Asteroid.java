@@ -15,14 +15,15 @@ import java.util.*;
 
 public class	Asteroid
 {
-	public static int	numParticles = 20;
-	public static double	time = 0.05;
+	public static int	numParticles = 80;
+	public static double	time = 0.02;
 	public static int	pause = 1;
-	public static int	historySize = 30;
-	public static int	historySpan = 30;
+	public static int	historySize = 50;
+	public static int	historySpan = 100;
 	public static boolean	enableHistory = true;
 	public static boolean	fadeHistory = true;
 	public static Color	backgroundColor = Color.BLACK;
+	public static int   maxSpeed = 50;
 	
 	public static void	main(String[] args)
 	{
@@ -38,15 +39,9 @@ public class	Asteroid
 		                   	                        historySize, historySpan, 
 		                   	                        backgroundColor, 
 		                   	                        enableHistory, fadeHistory);
-		//ast.debug();/*
+
 		window.add(ast);
 		window.setVisible(true);
-		
-		/*
-		while (true)
-		{
-			ast.repaint();
-		}/*/
 		
 		// Display timer
 		javax.swing.Timer	dispTimer = new javax.swing.Timer(pause, new ActionListener()
@@ -58,7 +53,6 @@ public class	Asteroid
 		});
 		dispTimer.setRepeats(true);
 		dispTimer.start();
-		//*/
 	}
 }
 
@@ -83,12 +77,12 @@ class	AsteroidPanel extends GraphicsPanel
 		setBackground(backgroundColor);
 		
 		// Sets the particle extremes
-		int	maxSpeed = 0;
+		int	maxSpeed = Asteroid.maxSpeed;
 		Particle	min = new Particle();
 		Particle	max = new Particle();
 		// Position
 		min.set(0, 0, 0);
-		max.set(600, 600, 600);
+		max.set(1000, 1000, 1000);
 		// Velocity
 		min.velocity.set(-maxSpeed, -maxSpeed, -maxSpeed);
 		max.velocity.set(maxSpeed, maxSpeed, maxSpeed);
@@ -97,57 +91,16 @@ class	AsteroidPanel extends GraphicsPanel
 		max.mass = 1;
 		// Color
 		min.color = new Color(150, 100, 0);
-		max.color = new Color(255, 200, 0);
+		max.color = new Color(255, 255, 255);
 		
 		// Creates the particles
 		env.group.clear();
 		
-		/*
-		Particle	planet = new Particle();
-		planet.set(0, 0, 0);
-		planet.color = Color.CYAN;
-		planet.velocity.set(0, 0, 0);
-		planet.mass = 100;
-		planet.radius = 20;
-		env.group.add(planet);
-		
-		Particle	moon = new Particle();
-		moon.set(300, 0, 0);
-		moon.color = Color.BLACK;
-		moon.velocity.set(0, 300, 0);
-		moon.mass = 1;
-		env.group.add(moon);
-		
-		Particle	moon2 = new Particle();
-		moon.set(0, -300, 0);
-		moon.color = Color.RED;
-		moon.velocity.set(300*Math.sqrt(2)/2.0, 0, 300*Math.sqrt(2)/2.0);
-		moon.mass = 1;
-		env.group.add(moon);
-		//*/
-		
-		//*
 		for (int i = 0; i < numParticles; i++)
 		{
 			Particle	p = new Particle(min, max);
 			env.group.add(p);
 		}
-		//*/
-		
-		/*
-		Camera.rotateRadius = 300;
-		for (int y = 0; y < 360; y += 30)
-		{
-			for (int z = 0; z < 360; z += 30)
-			{
-				Camera	cam = new Camera();
-				cam.viewAngles.set(0, y, z);
-				env.group.add(cam.getCameraOrigin());
-			}
-		}
-		//*/
-		
-		//ObjectLoader.load(new String("../Input/sphere.stl"), env.group);
 	}
 	
 	public void	debug()
@@ -184,12 +137,10 @@ class	AsteroidPanel extends GraphicsPanel
 	public void	paint(Graphics g)
 	{
 		super.paint(g);
-		//redraw(g);
 		
 		env.group.set(base);		// Restores the uncolorized points
 		ParticlePhysics.interactAll(env.group, time);
 		ParticlePhysics.moveAll(env.group, time);
-		//((Point3D) env.group.get(0)).set(0, 0, 0);
 		base.set(env.group);		// Backs up the points before they're colorized
 		
 		if (enableHistory)
