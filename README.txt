@@ -1,6 +1,6 @@
 ASTEROID
 
-A 3D particle simulator.
+A 3D particle simulator I wrote back in college. It uses my "CUB3D" 3D rendering engine and true gravitational physics.
 
 CONTROLS
 
