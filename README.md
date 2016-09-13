@@ -9,9 +9,9 @@ Usage
 -----
 Run `Asteroid.jar` by double-clicking it.
 
-Rotate camera = Click + Drag
-Zoom in/out = Scroll up/down
-Move camera = Shift Click + Drag
+- Rotate camera = Click + Drag
+- Zoom in/out = Scroll up/down
+- Move camera = Shift Click + Drag
 
 Installation from source
 ------------------------
