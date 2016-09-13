@@ -14,8 +14,8 @@ Run `Asteroid.jar` by double-clicking it.
 - Zoom in/out = Scroll up/down
 - Move camera = Shift Click + Drag
 
-Installation from source
-------------------------
+Building from source
+--------------------
 To compile:
 ```sh
 javac *.java */*.java
